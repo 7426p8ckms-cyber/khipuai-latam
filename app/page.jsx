@@ -1,117 +1,95 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Home() {
-  const [formData, setFormData] = useState({ nombre: "", correo: "" });
+  const [nombre, setNombre] = useState("");
+  const [correo, setCorreo] = useState("");
   const [mensaje, setMensaje] = useState("");
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    // activar animación al montar el componente
-    setLoaded(true);
-  }, []);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensaje("⏳ Enviando...");
-    try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(formData),
-        }
-      );
-      if (response.ok) {
-        setMensaje("✅ Gracias por registrarte. Pronto te contactaremos.");
-        setFormData({ nombre: "", correo: "" });
-      } else setMensaje("⚠️ Ocurrió un error al enviar tus datos.");
-    } catch (err) {
-      console.error(err);
-      setMensaje("❌ No se pudo conectar al servidor.");
-    }
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
+      {
+        method: "POST",
+        body: JSON.stringify({ nombre, correo }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const data = await response.text();
+    setMensaje("✅ ¡Gracias por unirte a la lista de espera!");
+    setNombre("");
+    setCorreo("");
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black text-gray-100 font-[Inter] relative overflow-hidden p-6">
-      {/* efecto de fondo */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(0,120,255,0.25),transparent_60%),radial-gradient(circle_at_80%_80%,rgba(0,255,200,0.15),transparent_70%)] blur-3xl"></div>
-
-      {/* contenido principal */}
-      <div
-        className={`relative z-10 flex flex-col items-center text-center transition-all duration-1000 ease-out ${
-          loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-      >
-        <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-[length:200%_auto] animate-shine bg-clip-text text-transparent drop-shadow-md">
-          Khipu AI
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white text-center p-6">
+      <div className="max-w-2xl w-full space-y-8">
+        <h1 className="text-4xl md:text-6xl font-bold animate-glow">
+          🔒 Tu inteligencia, en tu propio dispositivo.
         </h1>
-        <p className="mt-3 text-lg text-gray-300">
-          Tu asistente de IA 100 % privado y local.
-        </p>
-        <p className="text-sm text-gray-500 mt-1">
-          Diseñado en LATAM, para LATAM.
+        <p className="text-lg md:text-xl text-gray-300">
+          <strong>Khipu AI</strong> es el primer asistente latino que protege tus
+          datos con privacidad total y tecnología local.
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mt-10 bg-gray-900/60 backdrop-blur-xl border border-gray-700 rounded-2xl p-8 w-full max-w-md space-y-5 shadow-2xl"
-        >
-          <h2 className="text-xl font-semibold text-cyan-400 text-center mb-4">
-            Únete a la lista de espera
+        <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-white/20">
+          <h2 className="text-2xl font-semibold mb-4 text-white">
+            Únete a la lista de espera privada 🛡️
           </h2>
-          <input
-            type="text"
-            name="nombre"
-            placeholder="Tu nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-            className="w-full p-3 rounded-lg bg-gray-800 text-gray-100 border border-gray-700 focus:outline-none focus:border-cyan-400 transition"
-          />
-          <input
-            type="email"
-            name="correo"
-            placeholder="Tu correo"
-            value={formData.correo}
-            onChange={handleChange}
-            required
-            className="w-full p-3 rounded-lg bg-gray-800 text-gray-100 border border-gray-700 focus:outline-none focus:border-cyan-400 transition"
-          />
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium shadow-lg transition"
-          >
-            Enviar
-          </button>
-          {mensaje && (
-            <p className="text-center text-sm text-gray-300 mt-2">{mensaje}</p>
-          )}
-        </form>
 
-        <footer className="mt-10 text-xs text-gray-500">
-          © 2025 Khipu AI — Hecho con ❤️ en Perú.
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <input
+              type="text"
+              placeholder="Tu nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
+              className="p-3 rounded-lg text-black focus:outline-none"
+            />
+            <input
+              type="email"
+              placeholder="Tu correo electrónico"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+              required
+              className="p-3 rounded-lg text-black focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:from-[#0072ff] hover:to-[#00c6ff] text-white py-3 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg animate-pulse"
+            >
+              Unirme a la lista de espera
+            </button>
+          </form>
+
+          {mensaje && <p className="mt-4 text-green-400">{mensaje}</p>}
+        </div>
+
+        <footer className="text-gray-400 text-sm mt-6">
+          © {new Date().getFullYear()} Khipu AI — Privacidad Local en LATAM.
         </footer>
       </div>
 
-      {/* animaciones */}
       <style jsx>{`
-        @keyframes shine {
-          to {
-            background-position: -200% center;
+        @keyframes glow {
+          0% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #00c6ff, 0 0 20px #0072ff;
+          }
+          50% {
+            text-shadow: 0 0 20px #fff, 0 0 40px #00c6ff, 0 0 80px #0072ff;
+          }
+          100% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #00c6ff, 0 0 20px #0072ff;
           }
         }
-        .animate-shine {
-          animation: shine 6s linear infinite;
+        .animate-glow {
+          animation: glow 3s infinite alternate;
         }
       `}</style>
     </main>
   );
 }
+
 
 
