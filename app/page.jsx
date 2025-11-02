@@ -13,7 +13,7 @@ export default function Home() {
             </p>
 
             <form
-              action="https://script.google.com/macros/s/AKfycbwuMJ7ij9VYF2BinVOG30ZMhjXrC1dJO9to7j_Ye88WuFEmM6hLhZVhaQMIcjt-WaIigA/exec"
+              action="https://script.google.com/macros/s/AKfycbwqNxz9msl5k7lIljx354GnkYLmI2bX5eobb5quv20RlsXmtg35XAiyhhvY9HTMYNvzAw/exec"
               method="POST"
               className="flex flex-col gap-3"
             >
