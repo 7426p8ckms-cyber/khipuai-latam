@@ -14,7 +14,7 @@ export default function Home() {
     setMensaje("⏳ Enviando...");
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec", // ⬅️ Pega aquí tu URL /exec real
+        "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
         {
           method: "POST",
           headers: {
@@ -38,10 +38,9 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-sky-100 to-white text-gray-800 p-6">
-      <h1 className="text-4xl font-bold mb-4 text-sky-700">Khipu AI</h1>
+      <h1 className="text-4xl font-bold mb-4 text-sky-700">Khipu AI — Privacidad Local en LATAM</h1>
       <p className="mb-6 text-center max-w-md">
-        Privacidad Local en LATAM — Déjanos tu información y te contactaremos
-        pronto.
+        Tu asistente de inteligencia artificial 100 % privado y local. Tus datos permanecen siempre en tu dispositivo.
       </p>
       <form
         onSubmit={handleSubmit}
