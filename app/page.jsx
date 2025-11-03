@@ -1,127 +1,193 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [nombre, setNombre] = useState("");
-  const [email, setEmail] = useState("");
-  const [mensaje, setMensaje] = useState("");
-  const [enviado, setEnviado] = useState(false);
+  const [formData, setFormData] = useState({ nombre: "", correo: "" });
+  const [showThankYou, setShowThankYou] = useState(false);
+  const [visibleSections, setVisibleSections] = useState([]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
-      {
-        method: "POST",
-        body: new URLSearchParams({ nombre, email, mensaje }),
-      }
-    );
-    if (res.ok) setEnviado(true);
+    try {
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      setShowThankYou(true);
+      setFormData({ nombre: "", correo: "" });
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+
+  // Animación al hacer scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const elements = document.querySelectorAll(".fade-section");
+      elements.forEach((el, i) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          setVisibleSections((prev) => [...new Set([...prev, i])]);
+        }
+      });
+    };
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-6 text-center relative overflow-hidden"
+      className="min-h-screen flex flex-col items-center justify-center text-center px-4"
       style={{
         background:
-          "linear-gradient(135deg, rgba(240, 230, 210, 0.9), rgba(255, 180, 100, 0.3))",
+          "linear-gradient(to bottom, #f8f1e7 0%, #e9d6b4 50%, #e0b96a 100%)",
         fontFamily: "Inter, sans-serif",
-        color: "#3a2f1e",
+        color: "#2c2c2c",
       }}
     >
-      {/* Figuras vectoriales decorativas */}
-      <svg
-        className="absolute top-10 left-10 animate-pulse opacity-30"
-        width="120"
-        height="120"
-        viewBox="0 0 100 100"
-        fill="none"
-      >
-        <circle cx="50" cy="50" r="40" stroke="#f2b46d" strokeWidth="3" />
-      </svg>
-      <svg
-        className="absolute bottom-10 right-10 animate-spin-slow opacity-20"
-        width="160"
-        height="160"
-        viewBox="0 0 100 100"
-        fill="none"
-      >
-        <rect
-          x="15"
-          y="15"
-          width="70"
-          height="70"
-          rx="15"
-          stroke="#d08a3c"
-          strokeWidth="2"
-        />
-      </svg>
+      {/* Candado minimalista animado */}
+      <div
+        className="w-16 h-16 mb-6 animate-bounce"
+        dangerouslySetInnerHTML={{
+          __html: `
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="16" y="28" width="32" height="28" rx="4" fill="#f4a261"/>
+            <path d="M24 28V20a8 8 0 0116 0v8" stroke="#f4a261" strokeWidth="4" strokeLinecap="round"/>
+            <circle cx="32" cy="42" r="3" fill="#fff"/>
+          </svg>`,
+        }}
+      ></div>
 
-      <h1 className="text-5xl font-bold mb-4">Khipu AI</h1>
-      <h2 className="text-xl font-medium mb-8 italic">
-        Privacidad local, innovación global.
-      </h2>
+      {/* Título */}
+      <h1
+        className="text-3xl md:text-5xl font-semibold mb-3 opacity-0 animate-fadeDown"
+        style={{ animation: "fadeDown 1s ease forwards" }}
+      >
+        Tu asistente de IA, 100% privado y hecho para LATAM
+      </h1>
 
-      <p className="max-w-xl text-lg mb-10">
-        Tecnología con alma latinoamericana. Únete a la lista privada y sé parte
-        del futuro de la inteligencia responsable.
+      {/* Frase secundaria */}
+      <p className="text-lg md:text-xl mb-8 text-gray-700">
+        Transformando la tecnología en confianza y simplicidad.
       </p>
 
-      {!enviado ? (
+      {/* Formulario */}
+      {!showThankYou ? (
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full max-w-sm"
+          className="bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-md w-full max-w-md"
         >
           <input
             type="text"
+            name="nombre"
             placeholder="Tu nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            value={formData.nombre}
+            onChange={handleChange}
             required
-            className="p-3 rounded-xl border border-[#d8b98a] bg-[#fffaf0] focus:outline-none focus:ring-2 focus:ring-[#f4a261]"
+            className="w-full p-3 mb-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
           <input
             type="email"
+            name="correo"
             placeholder="Tu correo"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.correo}
+            onChange={handleChange}
             required
-            className="p-3 rounded-xl border border-[#d8b98a] bg-[#fffaf0] focus:outline-none focus:ring-2 focus:ring-[#f4a261]"
-          />
-          <textarea
-            placeholder="Tu mensaje (opcional)"
-            value={mensaje}
-            onChange={(e) => setMensaje(e.target.value)}
-            className="p-3 rounded-xl border border-[#d8b98a] bg-[#fffaf0] focus:outline-none focus:ring-2 focus:ring-[#f4a261]"
+            className="w-full p-3 mb-5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
           <button
             type="submit"
-            className="mt-2 py-3 px-6 rounded-xl bg-gradient-to-r from-[#f4a261] to-[#e76f51] text-white font-semibold hover:opacity-90 transition-all shadow-md"
+            className="w-full bg-orange-500 text-white py-3 rounded-xl text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             Únete a la lista privada
           </button>
         </form>
       ) : (
-        <p className="text-lg font-semibold mt-6 text-[#e76f51]">
-          ¡Gracias por unirte! Te contactaremos pronto.
-        </p>
+        <div className="bg-white/80 border border-yellow-300 p-6 mt-6 rounded-2xl shadow-lg max-w-md animate-fadeIn">
+          <h3 className="text-2xl font-semibold mb-2 text-orange-600">
+            ¡Gracias por confiar en Khipu AI!
+          </h3>
+          <p>Tu privacidad es nuestra prioridad.</p>
+        </div>
       )}
+
+      {/* Sección de características */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-5xl">
+        {[
+          {
+            icon: "🔒",
+            title: "Privacidad local garantizada",
+            desc: "Tus datos nunca salen de tu dispositivo. Seguridad total, sin compromisos.",
+          },
+          {
+            icon: "🔗",
+            title: "Integración total con tus apps",
+            desc: "Conecta tu asistente con WhatsApp, Gmail o tu banco en segundos.",
+          },
+          {
+            icon: "🌎",
+            title: "Diseño con identidad LATAM",
+            desc: "Hecho para ti, adaptado a la realidad y cultura digital latinoamericana.",
+          },
+        ].map((item, i) => (
+          <div
+            key={i}
+            className={`fade-section transform transition-all duration-700 rounded-2xl p-6 shadow-md bg-white/60 border border-yellow-200 ${
+              visibleSections.includes(i)
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-6"
+            }`}
+          >
+            <div className="text-4xl mb-3">{item.icon}</div>
+            <h4 className="text-xl font-semibold mb-2">{item.title}</h4>
+            <p className="text-gray-700">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Animaciones */}
+      <style jsx>{`
+        @keyframes fadeDown {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeDown {
+          animation: fadeDown 1s ease forwards;
+        }
+        .animate-fadeIn {
+          animation: fadeIn 1s ease forwards;
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      `}</style>
     </div>
   );
 }
 
-// Animación personalizada
-const style = document.createElement("style");
-style.innerHTML = `
-  @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .animate-spin-slow {
-    animation: spin-slow 25s linear infinite;
-  }
-`;
-document.head.appendChild(style);
 
 
 
