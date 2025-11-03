@@ -45,7 +45,7 @@ export default function Home() {
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               required
-              className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0072ff]"
+              className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F28C28]"
             />
             <input
               type="email"
@@ -53,11 +53,11 @@ export default function Home() {
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
               required
-              className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0072ff]"
+              className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F28C28]"
             />
             <button
               type="submit"
-              className="bg-gradient-to-r from-[#00c6ff] to-[#0072ff] hover:from-[#0072ff] hover:to-[#00c6ff] text-white py-3 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg"
+              className="bg-[#F28C28] hover:bg-[#e67e22] text-white py-3 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
             >
               Unirme a la lista de espera
             </button>
@@ -74,13 +74,13 @@ export default function Home() {
       <style jsx>{`
         @keyframes glow {
           0% {
-            text-shadow: 0 0 5px #0072ff, 0 0 10px #00c6ff;
+            text-shadow: 0 0 5px #f28c28, 0 0 10px #f1b54c;
           }
           50% {
-            text-shadow: 0 0 20px #0072ff, 0 0 40px #00c6ff;
+            text-shadow: 0 0 20px #f28c28, 0 0 40px #f1b54c;
           }
           100% {
-            text-shadow: 0 0 5px #0072ff, 0 0 10px #00c6ff;
+            text-shadow: 0 0 5px #f28c28, 0 0 10px #f1b54c;
           }
         }
         .animate-glow {
@@ -90,6 +90,7 @@ export default function Home() {
     </main>
   );
 }
+
 
 
 
