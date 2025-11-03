@@ -30,9 +30,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#f8f2e8] to-[#f3e7d3] flex flex-col items-center justify-center text-center p-8">
-      {/* Logo / Icono */}
-      <div className="mb-6">
+    <main className="min-h-screen bg-gradient-to-br from-[#f9f3e8] to-[#f2e5cf] flex flex-col items-center justify-center text-center p-8 animate-fadeIn">
+      {/* LOGO */}
+      <div className="mb-4">
         <svg
           width="70"
           height="70"
@@ -42,54 +42,55 @@ export default function Home() {
           strokeWidth="1.4"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="drop-shadow-sm"
         >
           <rect x="3" y="11" width="18" height="10" rx="2" ry="2" />
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
       </div>
 
-      {/* Título principal */}
+      {/* TÍTULO */}
       <h1 className="text-5xl md:text-6xl font-light text-[#3a2d1b] mb-3">
-        Khipu AI
+        Khipu <span className="text-[#d67a00] font-semibold">IA</span>
       </h1>
 
-      {/* Frase inspiradora */}
-      <p className="text-lg md:text-xl text-[#6b5435] mb-10">
-        “Tecnología que une confianza e inteligencia.”
+      {/* FRASE INSPIRADORA */}
+      <p className="text-lg md:text-xl text-[#6b5435] mb-12">
+        “Inteligencia confiable, creada para Latinoamérica.”
       </p>
 
-      {/* Sección de características */}
-      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mb-12">
+      {/* CUADRADOS DE CARACTERÍSTICAS */}
+      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mb-14">
         {[
           {
             title: "Privacidad garantizada",
-            desc: "Tu información está protegida con encriptación avanzada.",
+            desc: "Tu información permanece siempre protegida, sin salir de tu entorno.",
           },
           {
             title: "Integración total con tus apps",
-            desc: "Khipu AI se adapta fácilmente a tus herramientas actuales.",
+            desc: "Khipu IA se conecta fácilmente con tus herramientas favoritas.",
           },
           {
             title: "Rendimiento excepcional",
-            desc: "Diseñada para velocidad, precisión y escalabilidad.",
+            desc: "Optimizada para velocidad, precisión y escalabilidad en tiempo real.",
           },
         ].map((item, i) => (
           <div
             key={i}
-            className="p-6 bg-[#fffaf3]/70 rounded-2xl shadow-sm hover:shadow-md transition duration-300"
+            className="p-6 bg-[#fffaf3]/80 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition duration-300"
           >
-            <h3 className="text-xl font-medium text-[#d67a00] mb-2">
+            <h3 className="text-xl font-semibold text-[#d67a00] mb-2">
               {item.title}
             </h3>
-            <p className="text-[#5c4a2a]">{item.desc}</p>
+            <p className="text-[#5c4a2a] leading-relaxed">{item.desc}</p>
           </div>
         ))}
       </div>
 
-      {/* Formulario */}
+      {/* FORMULARIO */}
       <form
         onSubmit={handleSubmit}
-        className="bg-[#fffaf3]/70 backdrop-blur-sm p-6 rounded-2xl shadow-md w-full max-w-md"
+        className="bg-[#fffaf3]/80 backdrop-blur-sm p-8 rounded-2xl shadow-md w-full max-w-md border border-[#ecd9b8]"
       >
         <h2 className="text-2xl mb-4 text-[#3a2d1b] font-light">
           Únete a la lista privada
@@ -110,7 +111,7 @@ export default function Home() {
           value={formData.email}
           onChange={handleChange}
           required
-          className="w-full mb-3 p-3 border border-[#e0c7a5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d67a00]/40"
+          className="w-full mb-4 p-3 border border-[#e0c7a5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d67a00]/40"
         />
         <button
           type="submit"
@@ -120,9 +121,27 @@ export default function Home() {
         </button>
         {mensaje && <p className="mt-3 text-[#6b5435]">{mensaje}</p>}
       </form>
+
+      {/* ANIMACIÓN SUAVE */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 1.2s ease-out;
+        }
+      `}</style>
     </main>
   );
 }
+
 
 
 
