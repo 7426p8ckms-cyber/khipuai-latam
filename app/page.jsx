@@ -1,144 +1,181 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Home() {
-  const [formData, setFormData] = useState({ nombre: "", correo: "" });
-  const [enviado, setEnviado] = useState(false);
+  const [nombre, setNombre] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [mensaje, setMensaje] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const sectionsRef = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("fade-up-visible");
+        });
+      },
+      { threshold: 0.2 }
+    );
+    sectionsRef.current.forEach((el) => el && observer.observe(el));
+    return () => sectionsRef.current.forEach((el) => el && observer.unobserve(el));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
-        {
-          method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify(formData),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      setEnviado(true);
-      setFormData({ nombre: "", correo: "" });
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await fetch(
+      "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
+      {
+        method: "POST",
+        body: JSON.stringify({ nombre, correo }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    setMensaje("✅ ¡Gracias por unirte a la lista de espera!");
+    setNombre("");
+    setCorreo("");
   };
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center text-center px-6"
-      style={{
-        backgroundColor: "#f6efe5",
-        fontFamily: "Inter, sans-serif",
-        color: "#2c2c2c",
-      }}
-    >
-      {/* Ícono de candado pequeño */}
-      <div className="mb-4">
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 64 64"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect x="16" y="28" width="32" height="28" rx="4" fill="#f28c28" />
-          <path
-            d="M24 28V20a8 8 0 0116 0v8"
-            stroke="#f28c28"
-            strokeWidth="4"
-            strokeLinecap="round"
-          />
-          <circle cx="32" cy="42" r="3" fill="#fff" />
-        </svg>
-      </div>
+    <main className="min-h-screen bg-[#f5eee4] text-[#0f0c29] flex flex-col items-center justify-center">
+      <section className="text-center px-6 py-16 md:py-24 fade-in">
+        <div className="flex flex-col items-center space-y-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-16 h-16 text-[#F28C28] opacity-0 animate-fadeIn"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M16.5 10.5V7.125a4.125 4.125 0 10-8.25 0V10.5m-1.875 0h12.75c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125H6.375A1.125 1.125 0 015.25 21.375v-9.75c0-.621.504-1.125 1.125-1.125z"
+            />
+          </svg>
+          <h1 className="text-4xl md:text-6xl font-bold">
+            Tu inteligencia digital, cuidada con privacidad real.
+          </h1>
+          <p className="text-lg md:text-xl text-gray-700 max-w-2xl">
+            Diseñada para LATAM. Hecha para personas que valoran su privacidad.
+          </p>
+          <a
+            href="#form"
+            className="bg-gradient-to-r from-[#F28C28] to-[#f1b54c] hover:opacity-90 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg"
+          >
+            Únete a la lista de espera
+          </a>
+        </div>
+      </section>
 
-      {/* Título principal */}
-      <h1 className="text-3xl md:text-5xl font-semibold mb-2">
-        Khipu AI — Privacidad Local en LATAM
-      </h1>
+      <section
+        ref={(el) => (sectionsRef.current[0] = el)}
+        className="w-full max-w-5xl text-center py-20 px-6 opacity-0 fade-up"
+      >
+        <h2 className="text-3xl font-bold mb-10">Cómo funciona</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="p-6 bg-white/60 rounded-xl shadow">
+            <h3 className="font-semibold text-xl mb-2">1. Instálalo</h3>
+            <p>Descarga Khipu AI en tu dispositivo y configura tus preferencias.</p>
+          </div>
+          <div className="p-6 bg-white/60 rounded-xl shadow">
+            <h3 className="font-semibold text-xl mb-2">2. Conéctalo</h3>
+            <p>Integra tus apps favoritas sin exponer tus datos a la nube.</p>
+          </div>
+          <div className="p-6 bg-white/60 rounded-xl shadow">
+            <h3 className="font-semibold text-xl mb-2">3. Disfrútalo</h3>
+            <p>Habla, organiza y automatiza con total privacidad local.</p>
+          </div>
+        </div>
+      </section>
 
-      {/* Frase secundaria */}
-      <p className="text-lg md:text-xl text-gray-700 mb-8">
-        Tu asistente inteligente que protege lo que más importa: tus datos.
-      </p>
+      <section
+        ref={(el) => (sectionsRef.current[1] = el)}
+        className="w-full max-w-5xl text-center py-20 px-6 opacity-0 fade-up"
+      >
+        <h2 className="text-3xl font-bold mb-10">Ventajas de privacidad</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="p-6 bg-white/60 rounded-xl shadow">
+            <h3 className="font-semibold text-xl mb-2">🔒 Datos locales</h3>
+            <p>Toda tu información se procesa en tu propio dispositivo.</p>
+          </div>
+          <div className="p-6 bg-white/60 rounded-xl shadow">
+            <h3 className="font-semibold text-xl mb-2">⚡ Sin esperas</h3>
+            <p>Rendimiento inmediato sin depender de servidores externos.</p>
+          </div>
+          <div className="p-6 bg-white/60 rounded-xl shadow">
+            <h3 className="font-semibold text-xl mb-2">🧭 Control total</h3>
+            <p>Activa o desactiva integraciones cuando tú lo decidas.</p>
+          </div>
+        </div>
+      </section>
 
-      {/* Formulario */}
-      {!enviado ? (
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white/80 p-6 rounded-2xl shadow-md w-full max-w-md"
-        >
+      <section
+        id="form"
+        ref={(el) => (sectionsRef.current[2] = el)}
+        className="w-full max-w-md text-center py-20 px-6 opacity-0 fade-up"
+      >
+        <h2 className="text-3xl font-bold mb-6">Únete a la lista privada</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="text"
-            name="nombre"
             placeholder="Tu nombre"
-            value={formData.nombre}
-            onChange={handleChange}
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
             required
-            className="w-full p-3 mb-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F28C28]"
           />
           <input
             type="email"
-            name="correo"
-            placeholder="Tu correo"
-            value={formData.correo}
-            onChange={handleChange}
+            placeholder="Tu correo electrónico"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
             required
-            className="w-full p-3 mb-5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F28C28]"
           />
           <button
             type="submit"
-            className="w-full bg-orange-500 text-white py-3 rounded-xl text-lg font-semibold hover:bg-orange-600 transition-all duration-300"
+            className="bg-gradient-to-r from-[#F28C28] to-[#f1b54c] hover:opacity-90 text-white py-3 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg"
           >
-            Únete a la lista privada
+            Enviar
           </button>
         </form>
-      ) : (
-        <div className="bg-white/90 border border-orange-300 p-6 mt-6 rounded-2xl shadow-md max-w-md">
-          <h3 className="text-2xl font-semibold mb-2 text-orange-600">
-            ¡Gracias por confiar en Khipu AI!
-          </h3>
-          <p>Tu privacidad es nuestra prioridad.</p>
-        </div>
-      )}
+        {mensaje && <p className="mt-4 text-green-600">{mensaje}</p>}
+      </section>
 
-      {/* Bloques de características */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-5xl">
-        {[
-          {
-            icon: "🔒",
-            title: "Privacidad local garantizada",
-            desc: "Tus datos permanecen solo en tu dispositivo.",
-          },
-          {
-            icon: "🔗",
-            title: "Integración total con tus apps",
-            desc: "Conecta tu asistente con WhatsApp, Gmail o tu banco fácilmente.",
-          },
-          {
-            icon: "🌎",
-            title: "Diseño con identidad LATAM",
-            desc: "Hecho para ti, adaptado a nuestra realidad digital.",
-          },
-        ].map((item, i) => (
-          <div
-            key={i}
-            className="bg-white/70 p-6 rounded-2xl shadow-sm border border-orange-100"
-          >
-            <div className="text-4xl mb-3">{item.icon}</div>
-            <h4 className="text-xl font-semibold mb-2">{item.title}</h4>
-            <p className="text-gray-700">{item.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+      <footer className="text-gray-500 text-sm py-6 text-center">
+        © {new Date().getFullYear()} Khipu AI — Privacidad Local en LATAM.
+      </footer>
+
+      <style jsx global>{`
+        .fade-in {
+          animation: fadeIn 2s ease forwards;
+        }
+        .animate-fadeIn {
+          animation: fadeIn 2.5s ease forwards;
+        }
+        .fade-up {
+          transform: translateY(30px);
+          transition: opacity 1s ease, transform 1s ease;
+        }
+        .fade-up-visible {
+          opacity: 1 !important;
+          transform: translateY(0);
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </main>
   );
 }
+
 
 
 
