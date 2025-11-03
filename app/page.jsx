@@ -1,209 +1,178 @@
 "use client";
-import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function Home() {
-  const [nombre, setNombre] = useState("");
-  const [correo, setCorreo] = useState("");
+  const [formData, setFormData] = useState({ nombre: "", correo: "" });
   const [enviado, setEnviado] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(
-      "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
-      {
-        method: "POST",
-        body: JSON.stringify({ nombre, correo }),
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    setEnviado(true);
-    setNombre("");
-    setCorreo("");
+    try {
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbwUGiRXEJ7dUazDVppx0S5G0XuJ72_Uzuri54Tw3yYgzIY1dJDM3vmTDiwo6dWdJlZxyg/exec",
+        {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      setEnviado(true);
+      setFormData({ nombre: "", correo: "" });
+    } catch (error) {
+      console.error("Error al enviar el formulario", error);
+    }
   };
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
+  const fadeUpSequence = {
+    hidden: { opacity: 0, y: 40 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, delay: i * 0.25 },
+    }),
+  };
 
   return (
     <main
-      className="min-h-screen text-gray-900 flex flex-col items-center justify-center px-6 relative overflow-hidden"
+      className="min-h-screen flex flex-col items-center justify-center text-center text-gray-800 px-6"
       style={{
-        background: `linear-gradient(-45deg, #f8f4eb, #f6f1e3, #f4eddc, #f8f4eb)`,
-        backgroundSize: "400% 400%",
-        backgroundPositionY: `${scrollY * 0.3}px`,
-        animation: "gradientFlow 20s ease infinite",
+        background:
+          "linear-gradient(180deg, #f8f3ec 0%, #f1e2c6 100%)",
+        backgroundSize: "cover",
       }}
     >
-      {/* Fondo luminoso */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,230,180,0.3),transparent_70%)] blur-3xl opacity-60 animate-glow"></div>
+      {/* Fondo decorativo */}
+      <img
+        src="https://images.unsplash.com/photo-1606761568499-6b1dbd6f98e5?auto=format&fit=crop&w=2000&q=80"
+        alt="ondas doradas"
+        className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+      />
 
-      {/* Logo + Candado */}
-      <div className="flex items-center gap-3 mt-12 fade-in relative z-10">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="url(#grad)"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="url(#grad)"
-          className="w-10 h-10 drop-shadow-md glow-lock"
-        >
-          <defs>
-            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ffb347" />
-              <stop offset="100%" stopColor="#ffcc33" />
-            </linearGradient>
-          </defs>
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M16.5 10.5V7.5a4.5 4.5 0 10-9 0v3m-1.5 0h12a1.5 1.5 0 011.5 1.5v7.5a1.5 1.5 0 01-1.5 1.5h-12A1.5 1.5 0 013 19.5V12a1.5 1.5 0 011.5-1.5z"
-          />
-        </svg>
-        <h1 className="text-5xl font-semibold tracking-tight">
-          Khipu<span className="text-amber-500">AI</span>
+      {/* Cabecera */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        className="relative z-10 mt-24"
+      >
+        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
+          Khipu AI — Privacidad Local en LATAM
         </h1>
-      </div>
-
-      {/* Frase principal */}
-      <section className="text-center max-w-3xl mt-8 relative z-10">
-        <p className="text-lg text-gray-700 mb-10">
-          Conectamos inteligencia y confianza.
-          <span className="block text-gray-900 mt-2 italic">
-            “El futuro pertenece a quienes saben proteger sus datos.”
-          </span>
+        <p className="text-lg md:text-2xl text-gray-700 mb-12">
+          Potencia tu día con IA, sin entregar tus datos.
         </p>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <input
-            type="text"
-            placeholder="Tu nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-            className="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 w-full sm:w-auto"
-          />
-          <input
-            type="email"
-            placeholder="Tu correo"
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
-            required
-            className="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 w-full sm:w-auto"
-          />
-          <button
-            type="submit"
-            className="relative bg-amber-500 hover:bg-amber-600 transition-all text-white px-6 py-3 rounded-xl shadow-md overflow-hidden group"
+      </motion.div>
+
+      {/* Imagen de candado */}
+      <motion.img
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        src="https://images.unsplash.com/photo-1625089838828-2a66d3e4165f?auto=format&fit=crop&w=800&q=80"
+        alt="candado brillante"
+        className="w-28 md:w-36 mb-8 opacity-90 relative z-10"
+      />
+
+      {/* Bloques destacados */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mb-24 relative z-10">
+        {[
+          {
+            title: "Privacidad Total",
+            desc: "Tus datos nunca salen de tu dispositivo.",
+          },
+          {
+            title: "Conectividad Inteligente",
+            desc: "Integra WhatsApp, correo y banca en segundos.",
+          },
+          {
+            title: "Rapidez Natural",
+            desc: "Interactúa por chat y obtén resultados inmediatos.",
+          },
+        ].map((item, i) => (
+          <motion.div
+            key={i}
+            custom={i}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUpSequence}
+            className="p-8 rounded-2xl shadow-md bg-white/60 backdrop-blur-sm hover:shadow-lg transition"
           >
-            <span className="relative z-10">
-              {enviado ? "¡Registrado!" : "Notificarme"}
-            </span>
-            <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-400 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500"></span>
-          </button>
-        </form>
+            <h3 className="text-xl font-semibold mb-3 text-gray-900">
+              {item.title}
+            </h3>
+            <p className="text-gray-700">{item.desc}</p>
+          </motion.div>
+        ))}
       </section>
 
-      {/* Fade elegante */}
-      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent my-16 opacity-60" />
+      {/* Fondo decorativo inferior */}
+      <img
+        src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=2000&q=80"
+        alt="brillo dorado"
+        className="absolute bottom-0 left-0 w-full h-80 object-cover opacity-30 pointer-events-none"
+      />
 
-      {/* Imagen principal */}
-      <section className="max-w-5xl text-center mb-20 fade-in relative z-10">
-        <h2 className="text-3xl font-semibold mb-6">Innovación con propósito</h2>
-        <img
-          src="https://cdn.pixabay.com/photo/2020/04/04/10/25/technology-5003220_1280.jpg"
-          alt="Futuro tecnológico elegante"
-          className="mx-auto rounded-2xl shadow-lg w-full sm:w-2/3 mb-8 opacity-95"
-        />
-        <p className="text-gray-700 leading-relaxed">
-          Fusionamos inteligencia artificial, diseño y ética para construir un
-          futuro más seguro, transparente y humano.
-        </p>
-      </section>
-
-      {/* Imagen secundaria */}
-      <section className="max-w-5xl text-center mb-20 fade-in relative z-10">
-        <h2 className="text-3xl font-semibold mb-6">Privacidad reforzada</h2>
-        <img
-          src="https://cdn.pixabay.com/photo/2022/06/14/20/15/cybersecurity-7263484_1280.jpg"
-          alt="Seguridad digital elegante"
-          className="mx-auto rounded-2xl shadow-lg w-full sm:w-2/3 mb-8 opacity-95"
-        />
-        <p className="text-gray-700 leading-relaxed">
-          Cada interacción está diseñada con cifrado avanzado y transparencia,
-          para que la innovación nunca sacrifique tu seguridad.
-        </p>
-      </section>
+      {/* Formulario */}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeIn}
+        className="relative z-10 bg-gradient-to-b from-[#f1e2c6] to-[#f8f3ec] p-10 rounded-2xl shadow-md mb-24 max-w-md w-full"
+      >
+        {enviado ? (
+          <p className="text-lg text-gray-800 font-medium">
+            ¡Gracias por unirte! Te contactaremos pronto.
+          </p>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+            <input
+              type="text"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              placeholder="Tu nombre"
+              required
+              className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#ff7b00]"
+            />
+            <input
+              type="email"
+              name="correo"
+              value={formData.correo}
+              onChange={handleChange}
+              placeholder="Tu correo"
+              required
+              className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#ff7b00]"
+            />
+            <button
+              type="submit"
+              className="bg-[#ff7b00] text-white font-semibold py-3 rounded-lg shadow-md transition transform hover:scale-105 hover:shadow-xl hover:brightness-110"
+            >
+              Únete a la lista privada
+            </button>
+          </form>
+        )}
+      </motion.section>
 
       {/* Footer */}
-      <footer className="text-sm text-gray-500 mb-6 relative z-10">
-        © 2025 KhipuAI — Tecnología con propósito.
+      <footer className="relative z-10 text-gray-600 mb-10 text-sm">
+        © 2025 Khipu AI — Privacidad Local en LATAM
       </footer>
-
-      {/* Animaciones */}
-      <style jsx>{`
-        .fade-in {
-          animation: fadeIn 1.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(15px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .glow-lock {
-          animation: glowPulse 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes glowPulse {
-          0% {
-            filter: drop-shadow(0 0 2px #ffd966) drop-shadow(0 0 5px #ffcc33);
-          }
-          100% {
-            filter: drop-shadow(0 0 8px #ffd966) drop-shadow(0 0 16px #ffcc33);
-          }
-        }
-
-        @keyframes gradientFlow {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        @keyframes glow {
-          0% {
-            opacity: 0.5;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            opacity: 0.5;
-          }
-        }
-
-        .animate-glow {
-          animation: glow 8s ease-in-out infinite;
-        }
-      `}</style>
     </main>
   );
 }
+
 
 
 
