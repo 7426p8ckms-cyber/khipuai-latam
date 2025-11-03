@@ -44,26 +44,41 @@ export default function Home() {
 
   return (
     <main
-      className="min-h-screen flex flex-col items-center justify-center text-center text-gray-800 px-6"
+      className="min-h-screen flex flex-col items-center justify-center text-center text-gray-800 px-6 overflow-hidden relative"
       style={{
-        background:
-          "linear-gradient(180deg, #f8f3ec 0%, #f1e2c6 100%)",
-        backgroundSize: "cover",
+        background: "linear-gradient(180deg, #f9f4eb 0%, #f1e2c6 100%)",
       }}
     >
-      {/* Fondo decorativo */}
-      <img
-        src="https://images.unsplash.com/photo-1606761568499-6b1dbd6f98e5?auto=format&fit=crop&w=2000&q=80"
-        alt="ondas doradas"
-        className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
-      />
+      {/* Fondo animado con ondas */}
+      <motion.div
+        className="absolute top-0 left-0 w-[200%] h-64 opacity-30"
+        style={{ transform: "translateX(-50%)" }}
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{
+          duration: 20,
+          ease: "linear",
+          repeat: Infinity,
+        }}
+      >
+        <svg
+          viewBox="0 0 1440 320"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+        >
+          <path
+            fill="#d6c7aa"
+            fillOpacity="0.3"
+            d="M0,160L60,144C120,128,240,96,360,85.3C480,75,600,85,720,117.3C840,149,960,203,1080,218.7C1200,235,1320,213,1380,202.7L1440,192V320H0Z"
+          ></path>
+        </svg>
+      </motion.div>
 
-      {/* Cabecera */}
+      {/* Encabezado */}
       <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeIn}
-        className="relative z-10 mt-24"
+        className="relative z-10 mt-32"
       >
         <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
           Khipu AI — Privacidad Local en LATAM
@@ -73,17 +88,25 @@ export default function Home() {
         </p>
       </motion.div>
 
-      {/* Imagen de candado */}
-      <motion.img
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        src="https://images.unsplash.com/photo-1625089838828-2a66d3e4165f?auto=format&fit=crop&w=800&q=80"
-        alt="candado brillante"
-        className="w-28 md:w-36 mb-8 opacity-90 relative z-10"
-      />
+      {/* Candado SVG */}
+      <div className="relative z-10 mb-12">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="#b59c6c"
+          className="w-20 h-20 opacity-70 mx-auto"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M16.5 10.5V7.5a4.5 4.5 0 00-9 0v3M6 10.5h12a1.5 1.5 0 011.5 1.5v9a1.5 1.5 0 01-1.5 1.5H6A1.5 1.5 0 014.5 21v-9a1.5 1.5 0 011.5-1.5z"
+          />
+        </svg>
+      </div>
 
-      {/* Bloques destacados */}
+      {/* Cuadrados destacados */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mb-24 relative z-10">
         {[
           {
@@ -116,12 +139,27 @@ export default function Home() {
         ))}
       </section>
 
-      {/* Fondo decorativo inferior */}
-      <img
-        src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=2000&q=80"
-        alt="brillo dorado"
-        className="absolute bottom-0 left-0 w-full h-80 object-cover opacity-30 pointer-events-none"
-      />
+      {/* Brillo decorativo */}
+      <motion.div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] opacity-40"
+        animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.45, 0.3] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <svg
+          viewBox="0 0 600 200"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+        >
+          <ellipse
+            cx="300"
+            cy="100"
+            rx="250"
+            ry="60"
+            fill="#d6c7aa"
+            fillOpacity="0.2"
+          />
+        </svg>
+      </motion.div>
 
       {/* Formulario */}
       <motion.section
@@ -129,7 +167,7 @@ export default function Home() {
         whileInView="visible"
         viewport={{ once: true }}
         variants={fadeIn}
-        className="relative z-10 bg-gradient-to-b from-[#f1e2c6] to-[#f8f3ec] p-10 rounded-2xl shadow-md mb-24 max-w-md w-full"
+        className="relative z-10 bg-gradient-to-b from-[#f1e2c6] to-[#f9f4eb] p-10 rounded-2xl shadow-md mb-24 max-w-md w-full"
       >
         {enviado ? (
           <p className="text-lg text-gray-800 font-medium">
@@ -172,6 +210,7 @@ export default function Home() {
     </main>
   );
 }
+
 
 
 
