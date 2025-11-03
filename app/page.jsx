@@ -30,16 +30,16 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#f5f0e6] to-[#f2e7d5] flex flex-col items-center justify-center text-center p-8">
-      {/* Candado SVG minimalista */}
-      <div className="mb-8 animate-fade-in">
+    <main className="min-h-screen bg-gradient-to-br from-[#f8f2e8] to-[#f3e7d3] flex flex-col items-center justify-center text-center p-8">
+      {/* Logo / Icono */}
+      <div className="mb-6">
         <svg
-          width="80"
-          height="80"
+          width="70"
+          height="70"
           viewBox="0 0 24 24"
           fill="none"
           stroke="#d67a00"
-          strokeWidth="1.6"
+          strokeWidth="1.4"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -49,17 +49,17 @@ export default function Home() {
       </div>
 
       {/* Título principal */}
-      <h1 className="text-4xl md:text-5xl font-light text-[#3a2d1b] mb-4 animate-fade-in">
+      <h1 className="text-5xl md:text-6xl font-light text-[#3a2d1b] mb-3">
         Khipu AI
       </h1>
 
       {/* Frase inspiradora */}
-      <p className="text-lg md:text-xl text-[#6b5435] mb-10 animate-fade-in-slow">
-        “Unimos inteligencia y confianza para construir el futuro.”
+      <p className="text-lg md:text-xl text-[#6b5435] mb-10">
+        “Tecnología que une confianza e inteligencia.”
       </p>
 
-      {/* Bloques de características */}
-      <div className="grid md:grid-cols-3 gap-6 max-w-4xl mb-10">
+      {/* Sección de características */}
+      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mb-12">
         {[
           {
             title: "Privacidad garantizada",
@@ -76,7 +76,7 @@ export default function Home() {
         ].map((item, i) => (
           <div
             key={i}
-            className="p-6 bg-[#fdfaf5]/70 rounded-2xl shadow-sm hover:shadow-md transition duration-300"
+            className="p-6 bg-[#fffaf3]/70 rounded-2xl shadow-sm hover:shadow-md transition duration-300"
           >
             <h3 className="text-xl font-medium text-[#d67a00] mb-2">
               {item.title}
@@ -89,7 +89,7 @@ export default function Home() {
       {/* Formulario */}
       <form
         onSubmit={handleSubmit}
-        className="bg-[#fffaf3]/60 backdrop-blur-sm p-6 rounded-2xl shadow-md w-full max-w-md animate-fade-in-slow"
+        className="bg-[#fffaf3]/70 backdrop-blur-sm p-6 rounded-2xl shadow-md w-full max-w-md"
       >
         <h2 className="text-2xl mb-4 text-[#3a2d1b] font-light">
           Únete a la lista privada
@@ -120,26 +120,6 @@ export default function Home() {
         </button>
         {mensaje && <p className="mt-3 text-[#6b5435]">{mensaje}</p>}
       </form>
-
-      {/* Animaciones */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fade-in {
-          animation: fadeIn 1s ease forwards;
-        }
-        .animate-fade-in-slow {
-          animation: fadeIn 2s ease forwards;
-        }
-      `}</style>
     </main>
   );
 }
