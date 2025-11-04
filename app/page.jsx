@@ -29,13 +29,13 @@ export default function Home() {
           🔒 Tu inteligencia, en tu propio dispositivo.
         </h1>
         <p className="text-lg md:text-xl text-gray-700">
-          <strong>Khipu AI</strong> es el primer asistente latino que protege tus
-          datos con privacidad total y tecnología local.
+          <strong>Khipu AI</strong> es el primer asistente que protege tus
+          datos con privacidad total y tecnología adaptada a nuestra cultura.
         </p>
 
         <div className="bg-white/60 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-[#0f0c29]/10">
           <h2 className="text-2xl font-semibold mb-4">
-            Únete a la lista de espera privada 🛡️
+            Únete a la lista de espera 🛡️
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -91,4 +91,5 @@ export default function Home() {
   );
 }
 
+// rebuild
 // rebuild
