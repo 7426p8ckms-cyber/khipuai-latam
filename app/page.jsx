@@ -24,36 +24,38 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-[#f5eee4] text-[#0f0c29] text-center p-6">
-      <div className="max-w-3xl w-full space-y-14">
+      <div className="max-w-2xl w-full space-y-10">
         {/* Título principal */}
         <h1 className="text-5xl md:text-7xl font-extrabold leading-tight animate-glow">
-          🔒 Tu inteligencia, en tu propio dispositivo.
+          Khipu <span className="text-[#F28C28]">AI</span>
         </h1>
 
-        {/* Descripción con Khipu AI destacado */}
-        <p className="text-2xl md:text-3xl text-gray-800 leading-relaxed">
-          <span className="font-extrabold text-4xl md:text-5xl">
-            Khipu <span className="text-[#F28C28]">AI</span>
-          </span>{" "}
-          es el primer asistente que protege tus datos con privacidad total y
-          tecnología adaptada a nuestra cultura.
+        {/* Subtítulo */}
+        <p className="text-xl md:text-2xl text-gray-700 leading-relaxed">
+          Tu inteligencia, en tu propio dispositivo.
         </p>
 
-        {/* Sección del formulario */}
-        <div className="bg-white/70 backdrop-blur-lg p-10 rounded-2xl shadow-2xl border border-[#0f0c29]/10 space-y-8">
-          <h2 className="text-3xl font-bold">Únete a la lista de espera</h2>
+        {/* Descripción */}
+        <p className="text-lg md:text-xl text-gray-600">
+          <strong>Khipu AI</strong> es el primer asistente diseñado para LATAM
+          que protege tus datos con privacidad totall y tecnología adaptada a tu
+          cultura.
+        </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col md:flex-row gap-4 justify-center"
-          >
+        {/* Formulario */}
+        <div className="bg-white/70 backdrop-blur-md p-8 rounded-2xl shadow-2xl border border-[#0f0c29]/10">
+          <h2 className="text-2xl font-semibold mb-6">
+            Únete a la lista de espera
+          </h2>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <input
               type="text"
               placeholder="Tu nombre"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               required
-              className="p-4 rounded-lg border border-gray-300 w-full md:w-auto focus:outline-none focus:ring-2 focus:ring-[#F28C28]"
+              className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F28C28]"
             />
             <input
               type="email"
@@ -61,38 +63,36 @@ export default function Home() {
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
               required
-              className="p-4 rounded-lg border border-gray-300 w-full md:w-auto focus:outline-none focus:ring-2 focus:ring-[#F28C28]"
+              className="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F28C28]"
             />
             <button
               type="submit"
-              className="bg-[#F28C28] hover:bg-[#e67e22] text-white py-4 px-8 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              className="bg-[#F28C28] hover:bg-[#e67e22] text-white py-3 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
             >
               Unirme a la lista de espera
             </button>
           </form>
 
-          {mensaje && (
-            <p className="mt-4 text-green-600 font-medium">{mensaje}</p>
-          )}
+          {mensaje && <p className="mt-4 text-green-600">{mensaje}</p>}
         </div>
 
         {/* Footer */}
-        <footer className="text-gray-500 text-sm mt-10">
+        <footer className="text-gray-500 text-sm mt-8">
           © {new Date().getFullYear()} Khipu AI — Privacidad Local en LATAM.
         </footer>
       </div>
 
-      {/* Animación Glow */}
+      {/* Efecto de brillo en el texto */}
       <style jsx>{`
         @keyframes glow {
           0% {
-            text-shadow: 0 0 6px #f28c28, 0 0 12px #f1b54c;
+            text-shadow: 0 0 5px #f28c28, 0 0 10px #f1b54c;
           }
           50% {
             text-shadow: 0 0 20px #f28c28, 0 0 40px #f1b54c;
           }
           100% {
-            text-shadow: 0 0 6px #f28c28, 0 0 12px #f1b54c;
+            text-shadow: 0 0 5px #f28c28, 0 0 10px #f1b54c;
           }
         }
         .animate-glow {
@@ -102,4 +102,5 @@ export default function Home() {
     </main>
   );
 }
+
 
